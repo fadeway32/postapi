@@ -1,6 +1,9 @@
 services:
   postadmin:
     image: ${POSTADMIN_IMAGE:-fadeway32/postadmin:latest}
+    build:
+      context: .
+      dockerfile: postadmin/Dockerfile
     container_name: postadmin
     ports:
       - "${POSTADMIN_PORT:-8088}:8088"
@@ -9,6 +12,18 @@ services:
       SPRING_DATASOURCE_URL: jdbc:h2:file:/app/data/postadmin;MODE=MySQL;DATABASE_TO_UPPER=false
     volumes:
       - postadmin-data:/app/data
+    restart: unless-stopped
+
+  postapifront:
+    image: ${POSTAPIFRONT_IMAGE:-fadeway32/postapifront:latest}
+    build:
+      context: ./postapifront
+      dockerfile: Dockerfile
+    container_name: postapifront
+    ports:
+      - "${POSTAPIFRONT_PORT:-9527}:80"
+    depends_on:
+      - postadmin
     restart: unless-stopped
 
 volumes:

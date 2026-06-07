@@ -1,5 +1,7 @@
 # postapiAll
 
+[English](README.md) | [中文](README.zh-CN.md)
+
 `postapiAll` is a full-stack API management workspace. It combines a Spring Boot admin service, a Vue 3 management console, a Postman-like HTTP request starter, and a cryptography starter for encrypted API payloads and runtime scripts.
 
 ## What It Does
@@ -94,33 +96,166 @@ http://127.0.0.1:8088
 - `GET /api/stats/groups`
 - `GET /api/stats/logs`
 
-## Docker
+## Docker Deployment
 
-Build the backend image:
+The repository includes Docker support for both services:
+
+- `postadmin`: Spring Boot backend, exposed on container port `8088`.
+- `postapifront`: Vue production build served by Nginx, exposed on container port `80`.
+
+In the frontend image, production API calls use `/proxy-default`. Nginx proxies that path to `http://postadmin:8088`, so the browser only needs to access the frontend service.
+
+### Deploy With Docker Compose
+
+Build and start both frontend and backend from the repository root:
 
 ```bash
-mvn -q -DskipTests clean package
+docker compose up -d --build
+```
+
+Default access URLs:
+
+```text
+Frontend: http://127.0.0.1:9527
+Backend:  http://127.0.0.1:8088
+```
+
+Default login:
+
+```json
+{
+  "tenantCode": "demo",
+  "username": "admin",
+  "password": "admin123"
+}
+```
+
+### Compose Environment Variables
+
+You can override ports, image tags and JVM options:
+
+```bash
+POSTADMIN_PORT=8088 \
+POSTAPIFRONT_PORT=9527 \
+POSTADMIN_IMAGE=fadeway32/postadmin:latest \
+POSTAPIFRONT_IMAGE=fadeway32/postapifront:latest \
+JAVA_OPTS="-Xms256m -Xmx512m" \
+docker compose up -d --build
+```
+
+On Windows PowerShell:
+
+```powershell
+$env:POSTADMIN_PORT="8088"
+$env:POSTAPIFRONT_PORT="9527"
+$env:JAVA_OPTS="-Xms256m -Xmx512m"
+docker compose up -d --build
+```
+
+### Data Persistence
+
+`postadmin` uses H2 file storage in the container:
+
+```text
+/app/data/postadmin
+```
+
+`compose.yaml` mounts it to the named Docker volume:
+
+```text
+postadmin-data:/app/data
+```
+
+List and inspect the volume:
+
+```bash
+docker volume ls
+docker volume inspect postapiall_postadmin-data
+```
+
+The exact volume prefix depends on the Compose project name.
+
+### Logs And Health Checks
+
+View service status:
+
+```bash
+docker compose ps
+```
+
+View logs:
+
+```bash
+docker compose logs -f postadmin
+docker compose logs -f postapifront
+```
+
+Smoke test:
+
+```bash
+curl http://127.0.0.1:9527
+curl http://127.0.0.1:8088/auth/me
+```
+
+`/auth/me` may return an unauthenticated response before login; the goal is to confirm the backend is reachable.
+
+### Upgrade
+
+Rebuild and restart while keeping the data volume:
+
+```bash
+git pull
+docker compose up -d --build
+```
+
+### Stop Or Remove
+
+Stop containers but keep data:
+
+```bash
+docker compose down
+```
+
+Remove containers and the H2 data volume:
+
+```bash
+docker compose down -v
+```
+
+### Backend-Only Docker Run
+
+Build and run only the backend image:
+
+```bash
 docker build -f postadmin/Dockerfile -t fadeway32/postadmin:latest .
+docker run -d \
+  --name postadmin \
+  -p 8088:8088 \
+  -e JAVA_OPTS="-Xms256m -Xmx512m" \
+  -v postadmin-data:/app/data \
+  fadeway32/postadmin:latest
 ```
 
-Run with Docker:
+### Frontend-Only Docker Build
+
+Build and run only the frontend image:
 
 ```bash
-docker run -d --name postadmin -p 8088:8088 -v postadmin-data:/app/data fadeway32/postadmin:latest
+docker build -t fadeway32/postapifront:latest ./postapifront
+docker run -d \
+  --name postapifront \
+  -p 9527:80 \
+  fadeway32/postapifront:latest
 ```
 
-Run with Compose:
-
-```bash
-docker compose up -d
-```
+When running the frontend alone, make sure its `/proxy-default` path is routed to a reachable backend. Compose handles this automatically through the shared Docker network.
 
 ## Repository
 
 Suggested GitHub repository:
 
 ```text
-https://github.com/fadeway32/postapiAll
+https://github.com/fadeway32/postapi
 ```
 
 Recommended topics:
