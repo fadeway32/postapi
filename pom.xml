@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.fadeway32</groupId>
+    <artifactId>post-suite</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>post-suite</name>
+    <description>Full-stack PostAPI workspace with an admin backend, HTTP execution starter, cryptography starter and Vue frontend.</description>
+
+    <modules>
+        <module>postcryption</module>
+        <module>postapi</module>
+        <module>postadmin</module>
+    </modules>
+</project>

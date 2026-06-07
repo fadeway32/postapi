@@ -1,0 +1,11 @@
+.git
+.idea
+postapi/target/*
+postcryption/target/*
+postadmin/target/*
+!postadmin/target/postadmin-0.0.1-SNAPSHOT.jar
+**/data
+postapifront
+**/*.log
+**/*.iml
+**/.DS_Store

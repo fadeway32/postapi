@@ -1,0 +1,52 @@
+server:
+  port: 8088
+
+spring:
+  application:
+    name: postadmin
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:file:./data/postadmin;MODE=MySQL;DATABASE_TO_UPPER=false;AUTO_SERVER=TRUE
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: assign_id
+
+sa-token:
+  token-name: postadmin-token
+  timeout: 86400
+  active-timeout: -1
+  is-concurrent: true
+  is-share: false
+  token-style: uuid
+  is-log: false
+
+postapi:
+  enabled: true
+  trace-enabled: true
+
+postcryption:
+  enabled: true
+
+postadmin:
+  crypto:
+    key-base64: MDEyMzQ1Njc4OWFiY2RlZg==
+    iv-base64: YWJjZGVmOTg3NjU0MzIxMA==
+  bootstrap:
+    tenant-code: demo
+    tenant-name: Demo Tenant
+    username: admin
+    password: admin123

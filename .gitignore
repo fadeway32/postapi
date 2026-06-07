@@ -1,0 +1,35 @@
+# Build output
+target/
+dist/
+.vite/
+.turbo/
+
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Runtime data
+data/
+*.db
+*.mv.db
+*.trace.db
+*.log
+tmp/
+**/tmp/
+
+# Local env
+.env.local
+.env.*.local
+
+# IDE and OS files
+.idea/
+.vscode/.history/
+.DS_Store
+Thumbs.db
+
+# Git metadata backups
+.git-backups/
+
+# Generated frontend diagnostics
+postapifront/tmp-vite*.log
+postapifront/groovy-sim-*.log

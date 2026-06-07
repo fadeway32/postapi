@@ -1,0 +1,58 @@
+{
+  "properties": [
+    {
+      "name": "postcryption.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "Whether to enable the postcryption auto configuration."
+    },
+    {
+      "name": "postcryption.register-bouncy-castle",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "Whether to register the BouncyCastle provider when the starter creates CryptoService."
+    },
+    {
+      "name": "postcryption.default-symmetric",
+      "type": "com.fadeway32.crypto.core.SymmetricAlgorithm",
+      "defaultValue": "AES",
+      "description": "Default symmetric algorithm used by helper APIs."
+    },
+    {
+      "name": "postcryption.default-asymmetric",
+      "type": "com.fadeway32.crypto.core.AsymmetricAlgorithm",
+      "defaultValue": "RSA",
+      "description": "Default asymmetric algorithm used by helper APIs."
+    },
+    {
+      "name": "postcryption.default-digest",
+      "type": "com.fadeway32.crypto.core.DigestAlgorithm",
+      "defaultValue": "SHA256",
+      "description": "Default digest algorithm used by helper APIs."
+    },
+    {
+      "name": "postcryption.test-controller.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": false,
+      "description": "Whether to expose the optional postcryption test controller."
+    },
+    {
+      "name": "postcryption.test-controller.path",
+      "type": "java.lang.String",
+      "defaultValue": "/postcryption/test",
+      "description": "Base path for the optional postcryption test controller."
+    },
+    {
+      "name": "postcryption.mock-controller.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": false,
+      "description": "Whether to expose the optional postadmin mock controller for frontend encryption algorithm simulation."
+    },
+    {
+      "name": "postcryption.mock-controller.path",
+      "type": "java.lang.String",
+      "defaultValue": "/postadmin/postcryption/mock",
+      "description": "Base path for the optional postadmin mock controller."
+    }
+  ]
+}
